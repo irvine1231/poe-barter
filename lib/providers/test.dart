@@ -5,7 +5,6 @@ import 'dart:io';
 
 import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:keyboard_event/keyboard_event.dart';
 import 'package:poe_trading_assistant/models/command.dart';
 import 'package:win32/win32.dart';
@@ -132,10 +131,10 @@ class TestProvider extends ChangeNotifier {
           for (var char in chars) {
             // _LF = 10, _CR = 13
             if ([10, 13].contains(char) && charsToBeDecode.isNotEmpty) {
-              final line = utf8.decode(charsToBeDecode);
+              final logLine = utf8.decode(charsToBeDecode);
               charsToBeDecode = [];
 
-              processLogLine(line);
+              processLogLine(logLine);
             } else {
               charsToBeDecode.add(char);
             }
@@ -152,31 +151,7 @@ class TestProvider extends ChangeNotifier {
     );
   }
 
-  void processLogLine(String line) {
-    final List<String> toMarkers = [
-      "@To",
-      "@An",
-      "@${String.fromCharCode(0x00c0)}",
-      "@Para",
-      "@От",
-      "@ถึง",
-      "@Para",
-      "@발신",
-      "@向",
-    ];
-
-    final List<String> fromMarkers = [
-      "@From",
-      "@Von",
-      "@De",
-      "@De",
-      "@Кому",
-      "@จาก",
-      "@De",
-      "@수신",
-      "@來自",
-    ];
-
+  void processLogLine(String logLine) {
     print("Line: $line");
   }
 
@@ -216,14 +191,17 @@ class TestProvider extends ChangeNotifier {
 
   String getExecutionFileLocation(int processID) {
     // Get a handle to the process.
-    final hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+    final hProcess = OpenProcess(
+        PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
 
     // Get a list of all the modules in this process.
     final hMods = calloc<HMODULE>(1024);
     final cbNeeded = calloc<DWORD>();
     String executionFileName = "";
 
-    if (EnumProcessModules(hProcess, hMods, sizeOf<HMODULE>() * 1024, cbNeeded) == 1) {
+    if (EnumProcessModules(
+            hProcess, hMods, sizeOf<HMODULE>() * 1024, cbNeeded) ==
+        1) {
       for (var i = 0; i < (cbNeeded.value ~/ sizeOf<HMODULE>()); i++) {
         final szModName = wsalloc(MAX_PATH);
 
@@ -352,4 +330,68 @@ class TestProvider extends ChangeNotifier {
 
     free(stringInput);
   }
+}
+
+class WhisperEvent {
+  static final List<String> toMarkers = [
+    "@To",
+    "@An",
+    "@${String.fromCharCode(0x00c0)}",
+    "@Para",
+    "@От",
+    "@ถึง",
+    "@Para",
+    "@발신",
+    "@向",
+  ];
+
+  static final List<String> fromMarkers = [
+    "@From",
+    "@Von",
+    "@De",
+    "@De",
+    "@Кому",
+    "@จาก",
+    "@De",
+    "@수신",
+    "@來自",
+  ];
+
+  static const String messageMarker = ": ";
+
+  late final String message;
+  late final String information;
+
+  WhisperEvent(String logLine) {
+    message = _parseMessage(logLine) ?? "";
+    information = _parseInformation(logLine) ?? "";
+  }
+
+  static WhisperEvent? tryParse(String logLine) {
+    if (!_isIncoming(logLine)) return null;
+
+    return WhisperEvent(logLine);
+  }
+
+  static String? _parseInformation(String logLine) {
+    int index = logLine.indexOf("]");
+    return (index != -1) ? logLine.substring(index + 2) : null;
+  }
+
+  static String? _parseMessage(String logLine) {
+    int index = logLine.indexOf(messageMarker);
+
+    return ((index != -1)
+        ? logLine.substring(index + messageMarker.length)
+        : null);
+  }
+
+  static bool _isIncoming(String logLine) {
+    String? information = _parseInformation(logLine);
+
+    return information != null &&
+        fromMarkers.any((fromMarker) => information.startsWith(fromMarker));
+  }
+
+  // static bool _isOutGoing(String logLine`) {}
 }
