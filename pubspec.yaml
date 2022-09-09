@@ -48,6 +48,7 @@ dependencies:
   package_info_plus_windows: ^2.0.0
   ffi: ^2.0.1
   keyboard_event: ^0.3.2
+  enum_to_string: ^2.0.1
 
 dev_dependencies:
   flutter_test:

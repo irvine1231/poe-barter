@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:poe_trading_assistant/providers/auto_update.dart';
-import 'package:provider/provider.dart';
 
 class ScreenBase extends StatelessWidget {
   const ScreenBase({
@@ -25,33 +23,33 @@ class ScreenBase extends StatelessWidget {
       ),
       body: Column(
         children: [
-          if (Provider.of<UpdateProvider>(context).newVersionDownloaded)
-            Container(
-              width: double.infinity,
-              color: Colors.grey,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 4.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "新版本已經下載完成，",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        await Provider.of<UpdateProvider>(context, listen: false).installUpdate();
-                      },
-                      child: const Text("請點此安裝更新"),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          // if (Provider.of<UpdateProvider>(context).newVersionDownloaded)
+          //   Container(
+          //     width: double.infinity,
+          //     color: Colors.grey,
+          //     child: Padding(
+          //       padding: const EdgeInsets.symmetric(
+          //         vertical: 4.0,
+          //       ),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [
+          //           const Text(
+          //             "新版本已經下載完成，",
+          //             style: TextStyle(
+          //               color: Colors.white,
+          //             ),
+          //           ),
+          //           TextButton(
+          //             onPressed: () async {
+          //               await Provider.of<UpdateProvider>(context, listen: false).installUpdate();
+          //             },
+          //             child: const Text("請點此安裝更新"),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
           body,
         ],
       ),
