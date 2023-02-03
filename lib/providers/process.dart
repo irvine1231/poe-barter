@@ -177,9 +177,6 @@ class ProcessProvider extends ChangeNotifier {
 
     WhisperEvent? whisperEvent = WhisperEvent.tryParse(logLine);
     if (whisperEvent != null) {
-      if (kDebugMode) {
-        print("There is a whisper!");
-      }
       return;
     }
 
@@ -278,50 +275,26 @@ class ProcessProvider extends ChangeNotifier {
   }
 
   void sendHideoutCommand() {
-    if (kDebugMode) {
-      print("Enter sendHideoutCommand");
-    }
-
     _sendCommand(Command.hideout);
   }
 
   void sendInviteCommand(String characterName) {
-    if (kDebugMode) {
-      print("Enter sendInviteCommand");
-    }
-
     _sendCommand(Command.invite.replaceAll("@name", characterName));
   }
 
   void sendTradeWithCommand(String characterName) {
-    if (kDebugMode) {
-      print("Enter sendTradeWithCommand");
-    }
-
     _sendCommand(Command.tradeWith.replaceAll("@name", characterName));
   }
 
   void sendKickCommand(String characterName) {
-    if (kDebugMode) {
-      print("Enter sendKickCommand");
-    }
-
     _sendCommand(Command.kick.replaceAll("@name", characterName));
   }
 
   void sendWhisperCommand(String characterName, String whisperContent) {
-    if (kDebugMode) {
-      print("Enter sendWhisper");
-    }
-
     _sendCommand(Command.whisper.replaceAll("@name", characterName).replaceAll("@whisperContent", whisperContent));
   }
 
   void _sendCommand(String command) {
-    if (kDebugMode) {
-      print("Enter sendCommand: $command");
-    }
-
     SetForegroundWindow(poeHWND);
 
     _sendEnter();
@@ -336,10 +309,6 @@ class ProcessProvider extends ChangeNotifier {
   }
 
   void _sendEnter() {
-    if (kDebugMode) {
-      print("Enter sendEnter");
-    }
-
     final enterInput = calloc<INPUT>();
     enterInput.ref.type = INPUT_KEYBOARD;
     enterInput.ref.ki.wVk = VK_RETURN;
@@ -352,10 +321,6 @@ class ProcessProvider extends ChangeNotifier {
   }
 
   void _sendSelectAll() {
-    if (kDebugMode) {
-      print("Enter sendSelectAll");
-    }
-
     final controlInput = calloc<INPUT>();
     final aInput = calloc<INPUT>();
 
@@ -379,10 +344,6 @@ class ProcessProvider extends ChangeNotifier {
   }
 
   void _sendChar(int unicodeChar) {
-    if (kDebugMode) {
-      print("Enter sendChar");
-    }
-
     final stringInput = calloc<INPUT>();
     stringInput.ref.type = INPUT_KEYBOARD;
     stringInput.ref.ki.dwFlags = KEYEVENTF_UNICODE;

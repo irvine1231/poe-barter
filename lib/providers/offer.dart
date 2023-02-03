@@ -7,6 +7,7 @@ import 'package:poe_trading_assistant/models/offer.dart';
 import 'package:poe_trading_assistant/models/offer_state.dart';
 import 'package:poe_trading_assistant/providers/process.dart';
 import 'package:poe_trading_assistant/providers/setting.dart';
+import 'package:window_manager/window_manager.dart';
 
 class OfferProvider extends ChangeNotifier {
   late ProcessProvider processProvider;
@@ -25,11 +26,19 @@ class OfferProvider extends ChangeNotifier {
       print(offers);
     }
 
+    if (offers.isNotEmpty) {
+      windowManager.setIgnoreMouseEvents(false);
+    }
+
     notifyListeners();
   }
 
   void _removeOffer(String offerId) {
     offers.removeAt(offers.indexWhere((offer) => offer.id == offerId));
+
+    if (offers.isEmpty) {
+      windowManager.setIgnoreMouseEvents(true);
+    }
 
     notifyListeners();
   }

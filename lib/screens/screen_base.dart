@@ -2,25 +2,33 @@ import 'package:flutter/material.dart';
 
 class ScreenBase extends StatelessWidget {
   const ScreenBase({
-    required this.title,
+    this.title,
+    this.leading,
+    this.backgroundColor = Colors.transparent,
     this.automaticallyImplyAppBarLeading = true,
     required this.body,
     this.floatingActionButton,
     Key? key,
   }) : super(key: key);
 
-  final String title;
+  final String? title;
+  final Color? backgroundColor;
   final bool automaticallyImplyAppBarLeading;
   final Widget body;
+  final Widget? leading;
   final Widget? floatingActionButton;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: automaticallyImplyAppBarLeading,
-        title: Text(title),
-      ),
+      appBar: title == null
+          ? null
+          : AppBar(
+              leading: leading,
+              automaticallyImplyLeading: automaticallyImplyAppBarLeading,
+              title: Text(title!),
+            ),
+      backgroundColor: backgroundColor,
       body: Column(
         children: [
           // if (Provider.of<UpdateProvider>(context).newVersionDownloaded)
