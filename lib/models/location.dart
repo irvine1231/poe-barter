@@ -1,4 +1,4 @@
-import 'package:poe_trading_assistant/extensions/string_extension.dart';
+import 'package:poe_barter/extensions/string_extension.dart';
 
 class Location {
   final String stashTabName;

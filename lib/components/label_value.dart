@@ -42,6 +42,7 @@ class LabelValue extends StatelessWidget {
             width: valueExtendWidth ? 320 : 120,
             child: Text(
               value,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: Colors.white,
               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:poe_trading_assistant/models/events/trade_event.dart';
-import 'package:poe_trading_assistant/models/offer_state.dart';
+import 'package:poe_barter/models/events/trade_event.dart';
+import 'package:poe_barter/models/offer_state.dart';
 
 class Offer {
   final String id = UniqueKey().toString();

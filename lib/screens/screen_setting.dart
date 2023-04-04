@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
-import 'package:poe_trading_assistant/constants.dart';
-import 'package:poe_trading_assistant/screens/screen_base.dart';
-import 'package:poe_trading_assistant/screens/screen_start.dart';
+import 'package:poe_barter/constants.dart';
+import 'package:poe_barter/screens/screen_base.dart';
+import 'package:poe_barter/screens/screen_start.dart';
 import 'package:window_manager/window_manager.dart';
 
 class ScreenSetting extends StatefulWidget {

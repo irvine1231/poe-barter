@@ -1,15 +1,17 @@
 import 'package:flutter/foundation.dart';
-import 'package:poe_trading_assistant/extensions/string_extension.dart';
-import 'package:poe_trading_assistant/models/events/player_joined_event.dart';
-import 'package:poe_trading_assistant/models/events/trade_accepted_event.dart';
-import 'package:poe_trading_assistant/models/events/trade_event.dart';
-import 'package:poe_trading_assistant/models/offer.dart';
-import 'package:poe_trading_assistant/models/offer_state.dart';
-import 'package:poe_trading_assistant/providers/process.dart';
-import 'package:poe_trading_assistant/providers/setting.dart';
+import 'package:poe_barter/extensions/string_extension.dart';
+import 'package:poe_barter/models/events/player_joined_event.dart';
+import 'package:poe_barter/models/events/trade_accepted_event.dart';
+import 'package:poe_barter/models/events/trade_event.dart';
+import 'package:poe_barter/models/offer.dart';
+import 'package:poe_barter/models/offer_state.dart';
+import 'package:poe_barter/providers/process.dart';
+import 'package:poe_barter/providers/setting.dart';
+import 'package:system_tray/system_tray.dart';
 import 'package:window_manager/window_manager.dart';
 
 class OfferProvider extends ChangeNotifier {
+  final AppWindow appWindow = AppWindow();
   late ProcessProvider processProvider;
   late SettingProvider settingProvider;
 
@@ -27,6 +29,7 @@ class OfferProvider extends ChangeNotifier {
     }
 
     if (offers.isNotEmpty) {
+      appWindow.show();
       windowManager.setIgnoreMouseEvents(false);
     }
 
@@ -38,6 +41,7 @@ class OfferProvider extends ChangeNotifier {
 
     if (offers.isEmpty) {
       windowManager.setIgnoreMouseEvents(true);
+      appWindow.hide();
     }
 
     notifyListeners();
@@ -106,10 +110,10 @@ class OfferProvider extends ChangeNotifier {
     if (_currentTradingOffer == null) return;
 
     processProvider.sendWhisperCommand(_currentTradingOffer!.tradeEvent.playerName, settingProvider.tradeSuccessMsg);
-    processProvider.sendKickCommand(settingProvider.selfCharacterName);
+    processProvider.sendKickCommand(_currentTradingOffer!.tradeEvent.playerName);
 
-    _currentTradingOffer = null;
     _removeOffer(_currentTradingOffer!.id);
+    _currentTradingOffer = null;
 
     notifyListeners();
   }

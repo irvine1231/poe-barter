@@ -1,13 +1,14 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:poe_trading_assistant/components/label_value.dart';
-import 'package:poe_trading_assistant/constants.dart';
-import 'package:poe_trading_assistant/models/offer.dart';
-import 'package:poe_trading_assistant/models/offer_state.dart';
-import 'package:poe_trading_assistant/providers/offer.dart';
-import 'package:poe_trading_assistant/providers/process.dart';
-import 'package:poe_trading_assistant/screens/screen_base.dart';
+import 'package:poe_barter/components/label_value.dart';
+import 'package:poe_barter/constants.dart';
+import 'package:poe_barter/models/offer.dart';
+import 'package:poe_barter/models/offer_state.dart';
+import 'package:poe_barter/providers/offer.dart';
+import 'package:poe_barter/providers/process.dart';
+import 'package:poe_barter/screens/screen_base.dart';
 import 'package:provider/provider.dart';
+import 'package:system_tray/system_tray.dart';
 import 'package:window_manager/window_manager.dart';
 
 class ScreenStart extends StatefulWidget {
@@ -21,6 +22,7 @@ class ScreenStart extends StatefulWidget {
 
 class _ScreenStartState extends State<ScreenStart> with WindowListener {
   late final OfferProvider offerProvider = Provider.of<OfferProvider>(context);
+  final AppWindow appWindow = AppWindow();
 
   @override
   void initState() {
@@ -37,6 +39,7 @@ class _ScreenStartState extends State<ScreenStart> with WindowListener {
     await windowManager.show();
     await windowManager.focus();
     await windowManager.setIgnoreMouseEvents(true);
+    await appWindow.hide();
   }
 
   @override

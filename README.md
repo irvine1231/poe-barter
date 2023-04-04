@@ -1,16 +1,23 @@
-# poe_trading_assistant
+# PoE Barter
 
-A Poe trading assistant
+A simple tool to help you barter in Path of Exile. 
 
-## Getting Started
+It's still in early development, so there are still many features to be added.
 
-This project is a starting point for a Flutter application.
+## Download
 
-A few resources to get you started if this is your first Flutter project:
+Please download the latest version from [Releases](https://github.com/irvine1231/poe-barter/releases/latest).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Trade
+
+- Automatically collect trade whispers and display them in a list.
+- Inviting player with single click.
+- Trading player with single click.
+- Automatically send Thank You message and kick player after trade.
+
+### Hotkeys
+
+- Press `F5` to go back to hideout.
+- Still working on more hotkeys.

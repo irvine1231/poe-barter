@@ -1,4 +1,4 @@
-import 'package:poe_trading_assistant/models/events/event.dart';
+import 'package:poe_barter/models/events/event.dart';
 
 class TradeAcceptedEvent extends Event {
   static final List<String> tradeAcceptedMarkers = [

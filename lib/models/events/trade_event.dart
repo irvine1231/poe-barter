@@ -1,11 +1,11 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/foundation.dart';
-import 'package:poe_trading_assistant/extensions/string_extension.dart';
-import 'package:poe_trading_assistant/models/currency_type.dart';
-import 'package:poe_trading_assistant/models/events/event.dart';
-import 'package:poe_trading_assistant/models/events/whisper_event.dart';
-import 'package:poe_trading_assistant/models/location.dart';
-import 'package:poe_trading_assistant/models/price.dart';
+import 'package:poe_barter/extensions/string_extension.dart';
+import 'package:poe_barter/models/currency_type.dart';
+import 'package:poe_barter/models/events/event.dart';
+import 'package:poe_barter/models/events/whisper_event.dart';
+import 'package:poe_barter/models/location.dart';
+import 'package:poe_barter/models/price.dart';
 
 class TradeEvent extends WhisperEvent {
   static const List<String> greetingMarkers = [

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:poe_trading_assistant/extensions/string_extension.dart';
-import 'package:poe_trading_assistant/models/events/event.dart';
+import 'package:poe_barter/extensions/string_extension.dart';
+import 'package:poe_barter/models/events/event.dart';
 
 class PlayerJoinedEvent extends Event {
   static const List<String> joinedAreaMarkers = [

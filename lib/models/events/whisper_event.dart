@@ -1,5 +1,5 @@
-import 'package:poe_trading_assistant/extensions/string_extension.dart';
-import 'package:poe_trading_assistant/models/events/event.dart';
+import 'package:poe_barter/extensions/string_extension.dart';
+import 'package:poe_barter/models/events/event.dart';
 
 class WhisperEvent extends Event {
   static const String endOfGuildNameMarker = ">";
@@ -28,10 +28,14 @@ class WhisperEvent extends Event {
     "@來自",
   ];
 
-  late final String playerName;
+  late String playerName;
 
   WhisperEvent(String logLine) : super(logLine) {
     playerName = information.before(Event.messageMarker).after(endOfGuildNameMarker).trim();
+    if (playerName.isEmpty) {
+      final String fromMarker = fromMarkers.firstWhere((fromMarker) => information.startsWith(fromMarker));
+      playerName = information.before(Event.messageMarker).after(fromMarker).trim();
+    }
   }
 
   static WhisperEvent? tryParse(String logLine) {

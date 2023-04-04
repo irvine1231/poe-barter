@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UpdateProvider extends ChangeNotifier {
   bool isDownloading = false;
   final GitHub github = GitHub();
-  final RepositorySlug repositorySlug = RepositorySlug("irvine1231", "poe-trading-assistant");
+  final RepositorySlug repositorySlug = RepositorySlug("irvine1231", "poe-barter");
   bool newVersionDownloaded = false;
 
   UpdateProvider() {

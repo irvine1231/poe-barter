@@ -6,12 +6,12 @@ import 'dart:io';
 import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:keyboard_event/keyboard_event.dart';
-import 'package:poe_trading_assistant/models/command.dart';
-import 'package:poe_trading_assistant/models/events/player_joined_event.dart';
-import 'package:poe_trading_assistant/models/events/trade_accepted_event.dart';
-import 'package:poe_trading_assistant/models/events/trade_event.dart';
-import 'package:poe_trading_assistant/models/events/whisper_event.dart';
-import 'package:poe_trading_assistant/providers/offer.dart';
+import 'package:poe_barter/models/command.dart';
+import 'package:poe_barter/models/events/player_joined_event.dart';
+import 'package:poe_barter/models/events/trade_accepted_event.dart';
+import 'package:poe_barter/models/events/trade_event.dart';
+import 'package:poe_barter/models/events/whisper_event.dart';
+import 'package:poe_barter/providers/offer.dart';
 import 'package:win32/win32.dart';
 
 class ProcessProvider extends ChangeNotifier {

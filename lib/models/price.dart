@@ -1,4 +1,4 @@
-import 'package:poe_trading_assistant/models/currency_type.dart';
+import 'package:poe_barter/models/currency_type.dart';
 
 class Price {
   final double numberOfCurrency;
