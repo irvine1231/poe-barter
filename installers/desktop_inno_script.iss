@@ -6,7 +6,7 @@
 #define MyAppBuildVersion "3"
 #define MyAppPublisher "Irvine Chang"
 #define MyAppURL "https://www.irvinechang.com"
-#define MyAppExeName "PoE Barter.exe"
+#define MyAppExeName "poe_barter.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
