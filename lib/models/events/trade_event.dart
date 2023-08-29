@@ -31,7 +31,7 @@ class TradeEvent extends WhisperEvent {
   late Location location;
   late Price price;
 
-  bool get isAllSet => !leagueName.isBlank && !itemName.isBlank && location.isAllSet && price.isAllSet;
+  bool get isAllSet => !leagueName.isBlank && !itemName.isBlank && price.isAllSet;
 
   TradeEvent(String logLine) : super(logLine) {
     if (kDebugMode) {

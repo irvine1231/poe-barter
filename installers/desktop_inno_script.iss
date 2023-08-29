@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PoE Barter"
-#define MyAppVersion "1.0.1"
-#define MyAppBuildVersion "2"
+#define MyAppVersion "1.0.2"
+#define MyAppBuildVersion "3"
 #define MyAppPublisher "Irvine Chang"
 #define MyAppURL "https://www.irvinechang.com"
 #define MyAppExeName "PoE Barter.exe"
@@ -20,7 +20,7 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
-DisableProgramGroupPage=yes
+DisableProgramGroupPage=yes 
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
 OutputDir=.\

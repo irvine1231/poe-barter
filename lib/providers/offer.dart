@@ -124,7 +124,8 @@ class OfferProvider extends ChangeNotifier {
 
     processProvider.sendWhisperCommand(
       offers[offerIndex].tradeEvent.playerName,
-      settingProvider.alreadySoldMsg.replaceAll("@itemName", offers[offerIndex].tradeEvent.itemName),
+      settingProvider.alreadySoldMsg.replaceAll(
+          "@itemName", "The item" /*offers[offerIndex].tradeEvent.itemName*/), // 中文化後物品也會變中文，傳出去對方會看不懂，先改成 Item。
     );
 
     _removeOffer(offerId);

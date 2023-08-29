@@ -92,12 +92,15 @@ class _ScreenStartState extends State<ScreenStart> with WindowListener {
                                   children: [
                                     LabelValue(
                                       label: "StashTab",
-                                      value: offer.tradeEvent.location.stashTabName,
+                                      value: offer.tradeEvent.location.stashTabName.isEmpty
+                                          ? "Unknown"
+                                          : offer.tradeEvent.location.stashTabName,
                                     ),
                                     LabelValue(
                                       label: "Position",
-                                      value:
-                                          "left ${offer.tradeEvent.location.left}, top ${offer.tradeEvent.location.top}",
+                                      value: offer.tradeEvent.location.left == 0 && offer.tradeEvent.location.top == 0
+                                          ? "Unknown"
+                                          : "left ${offer.tradeEvent.location.left}, top ${offer.tradeEvent.location.top}",
                                     ),
                                     LabelValue(
                                         label: "Price",
@@ -122,18 +125,13 @@ class _ScreenStartState extends State<ScreenStart> with WindowListener {
                                               child: const Text("Send Invite"),
                                             )
                                           : (offer.offerState == OfferState.inviteSent
-                                              ? const ElevatedButton(
-                                                  onPressed: null,
-                                                  child: Text("Invite Sent"),
+                                              ? ElevatedButton(
+                                                  onPressed: () {
+                                                    offerProvider.sendTradeRequest(offer.id);
+                                                  },
+                                                  child: const Text("Trade With"),
                                                 )
-                                              : (offer.offerState == OfferState.playerJoined
-                                                  ? ElevatedButton(
-                                                      onPressed: () {
-                                                        offerProvider.sendTradeRequest(offer.id);
-                                                      },
-                                                      child: const Text("Trade With"),
-                                                    )
-                                                  : null)),
+                                              : null),
                                     ),
                                     LabelValue(
                                       label: "",

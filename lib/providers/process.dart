@@ -7,7 +7,6 @@ import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:keyboard_event/keyboard_event.dart';
 import 'package:poe_barter/models/command.dart';
-import 'package:poe_barter/models/events/player_joined_event.dart';
 import 'package:poe_barter/models/events/trade_accepted_event.dart';
 import 'package:poe_barter/models/events/trade_event.dart';
 import 'package:poe_barter/models/events/whisper_event.dart';
@@ -89,7 +88,7 @@ class ProcessProvider extends ChangeNotifier {
     });
 
     keyboardEvent.startListening((keyEvent) {
-      if (!isPoeActive) return;
+      // if (!isPoeActive) return;
 
       if (keyEvent.isKeyUP) {
         if (keyEvent.vkCode == VK_F5) {
@@ -153,7 +152,7 @@ class ProcessProvider extends ChangeNotifier {
         }
       },
       onDone: () async {
-        await Future.delayed(const Duration(seconds: 2));
+        await Future.delayed(const Duration(milliseconds: 500));
 
         startProcessIncomingLogsLoop();
       },
@@ -180,15 +179,15 @@ class ProcessProvider extends ChangeNotifier {
       return;
     }
 
-    PlayerJoinedEvent? playerJoinedEvent = PlayerJoinedEvent.tryParse(logLine);
-    if (playerJoinedEvent != null) {
-      if (kDebugMode) {
-        print("There is a player joined!");
-      }
-
-      _offerProvider.handlePlayerJoined(playerJoinedEvent);
-      return;
-    }
+    // PlayerJoinedEvent? playerJoinedEvent = PlayerJoinedEvent.tryParse(logLine);
+    // if (playerJoinedEvent != null) {
+    //   if (kDebugMode) {
+    //     print("There is a player joined!");
+    //   }
+    //
+    //   _offerProvider.handlePlayerJoined(playerJoinedEvent);
+    //   return;
+    // }
 
     TradeAcceptedEvent? tradeAcceptedEvent = TradeAcceptedEvent.tryParse(logLine);
     if (tradeAcceptedEvent != null) {
@@ -301,7 +300,7 @@ class ProcessProvider extends ChangeNotifier {
 
     _sendSelectAll();
 
-    for (int unicodeChar in utf8.encode(command)) {
+    for (int unicodeChar in command.codeUnits) {
       _sendChar(unicodeChar);
     }
 
