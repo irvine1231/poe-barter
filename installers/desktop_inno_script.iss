@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PoE Barter"
-#define MyAppVersion "1.0.2"
-#define MyAppBuildVersion "3"
+#define MyAppVersion "1.0.3"
+#define MyAppBuildVersion "4"
 #define MyAppPublisher "Irvine Chang"
 #define MyAppURL "https://www.irvinechang.com"
 #define MyAppExeName "poe_barter.exe"

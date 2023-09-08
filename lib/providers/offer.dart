@@ -17,6 +17,7 @@ class OfferProvider extends ChangeNotifier {
 
   List<Offer> offers = [];
 
+  int currentViewingOffer = 0;
   Offer? _currentTradingOffer;
 
   void addOffer(TradeEvent tradeEvent) {
@@ -33,11 +34,17 @@ class OfferProvider extends ChangeNotifier {
       windowManager.setIgnoreMouseEvents(false);
     }
 
+    print(currentViewingOffer);
     notifyListeners();
   }
 
   void _removeOffer(String offerId) {
-    offers.removeAt(offers.indexWhere((offer) => offer.id == offerId));
+    int removeIndex = offers.indexWhere((offer) => offer.id == offerId);
+    if (removeIndex == (offers.length - 1) && removeIndex != 0) {
+      currentViewingOffer = removeIndex - 1;
+    }
+
+    offers.removeAt(removeIndex);
 
     if (offers.isEmpty) {
       windowManager.setIgnoreMouseEvents(true);

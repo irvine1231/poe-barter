@@ -78,6 +78,10 @@ class ProcessProvider extends ChangeNotifier {
           poePath = getPoePath();
 
           listenForPoeClientLog();
+        } else {
+          poeHWND = hwnd;
+          poeProcessId = getProcessId(poeHWND);
+          poePath = getPoePath();
         }
       } else {
         isPoeActive = false;
@@ -88,7 +92,7 @@ class ProcessProvider extends ChangeNotifier {
     });
 
     keyboardEvent.startListening((keyEvent) {
-      // if (!isPoeActive) return;
+      if (!isPoeActive) return;
 
       if (keyEvent.isKeyUP) {
         if (keyEvent.vkCode == VK_F5) {
