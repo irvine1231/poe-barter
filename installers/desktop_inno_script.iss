@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "PoE Barter"
-#define MyAppVersion "1.0.3"
-#define MyAppBuildVersion "4"
+#define MyAppVersion "1.0.4"
+#define MyAppBuildVersion "6"
 #define MyAppPublisher "Irvine Chang"
 #define MyAppURL "https://www.irvinechang.com"
 #define MyAppExeName "poe_barter.exe"
@@ -44,7 +44,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: ".\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\vcruntime140_1.dll"; DestDir: "{app}"; Flags: ignoreversion 
-Source: "..\build\windows\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs 
+Source: "..\build\windows\x64\runner\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

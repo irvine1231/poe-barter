@@ -4,6 +4,7 @@ class ScreenBase extends StatelessWidget {
   const ScreenBase({
     this.title,
     this.leading,
+    this.trailing,
     this.backgroundColor = Colors.transparent,
     this.automaticallyImplyAppBarLeading = true,
     required this.body,
@@ -16,6 +17,7 @@ class ScreenBase extends StatelessWidget {
   final bool automaticallyImplyAppBarLeading;
   final Widget body;
   final Widget? leading;
+  final List<Widget>? trailing;
   final Widget? floatingActionButton;
 
   @override
@@ -27,11 +29,13 @@ class ScreenBase extends StatelessWidget {
               leading: leading,
               automaticallyImplyLeading: automaticallyImplyAppBarLeading,
               title: Text(title!),
+              actions: trailing,
             ),
       backgroundColor: backgroundColor,
       body: Column(
         children: [
-          // if (Provider.of<UpdateProvider>(context).newVersionDownloaded)
+          // if (Provider.of<UpdateProvider?>(context) != null &&
+          //     Provider.of<UpdateProvider>(context).newVersionDownloaded)
           //   Container(
           //     width: double.infinity,
           //     color: Colors.grey,
@@ -43,7 +47,7 @@ class ScreenBase extends StatelessWidget {
           //         mainAxisAlignment: MainAxisAlignment.center,
           //         children: [
           //           const Text(
-          //             "新版本已經下載完成，",
+          //             "New Version is downloaded, ",
           //             style: TextStyle(
           //               color: Colors.white,
           //             ),
@@ -52,7 +56,7 @@ class ScreenBase extends StatelessWidget {
           //             onPressed: () async {
           //               await Provider.of<UpdateProvider>(context, listen: false).installUpdate();
           //             },
-          //             child: const Text("請點此安裝更新"),
+          //             child: const Text("please click here to update."),
           //           ),
           //         ],
           //       ),

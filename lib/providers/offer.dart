@@ -34,7 +34,6 @@ class OfferProvider extends ChangeNotifier {
       windowManager.setIgnoreMouseEvents(false);
     }
 
-    print(currentViewingOffer);
     notifyListeners();
   }
 

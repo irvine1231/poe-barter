@@ -1,16 +1,28 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:github/github.dart';
-import 'package:package_info_plus_windows/package_info_plus_windows.dart';
+import 'package:no_context_navigation/no_context_navigation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:poe_barter/screens/screen_update.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateProvider extends ChangeNotifier {
   bool isDownloading = false;
   final GitHub github = GitHub();
   final RepositorySlug repositorySlug = RepositorySlug("irvine1231", "poe-barter");
-  bool newVersionDownloaded = false;
+
+  late final String newVersionFolderPath;
+
+  bool _newVersionDownloaded = false;
+  bool get newVersionDownloaded => _newVersionDownloaded;
+  set newVersionDownloaded(bool value) {
+    _newVersionDownloaded = value;
+
+    notifyListeners();
+  }
 
   UpdateProvider() {
     updateHandler();
@@ -25,10 +37,11 @@ class UpdateProvider extends ChangeNotifier {
     return newVersionDownloadedPref;
   }
 
-  Future<void> setNewVersionDownloadedInPreference(bool newVersionDownloaded) async {
+  Future<void> setNewVersionDownloadedInPreference(bool value) async {
     final prefs = await SharedPreferences.getInstance();
+    newVersionDownloaded = value;
 
-    prefs.setBool("newVersionDownloaded", newVersionDownloaded);
+    prefs.setBool("newVersionDownloaded", value);
   }
 
   Future<String?> retrieveNewVersionFilePathInPreference() async {
@@ -37,10 +50,10 @@ class UpdateProvider extends ChangeNotifier {
     return prefs.getString("newVersionFilePath");
   }
 
-  Future<void> setNewVersionFilePathInPreference(String newVersionFilePath) async {
+  Future<void> setNewVersionFilePathInPreference(String value) async {
     final prefs = await SharedPreferences.getInstance();
 
-    prefs.setString("newVersionFilePath", newVersionFilePath);
+    prefs.setString("newVersionFilePath", value);
   }
 
   Future<String?> retrieveNewVersionNameInPreference() async {
@@ -49,16 +62,28 @@ class UpdateProvider extends ChangeNotifier {
     return prefs.getString("newVersionName");
   }
 
-  Future<void> setNewVersionNameInPreference(String newVersionName) async {
+  Future<void> setNewVersionNameInPreference(String value) async {
     final prefs = await SharedPreferences.getInstance();
 
-    prefs.setString("newVersionName", newVersionName);
+    prefs.setString("newVersionName", value);
+  }
+
+  void removeAllDownloadedVersionFile() {
+    Directory(newVersionFolderPath).deleteSync(
+      recursive: true,
+    );
+
+    Directory(newVersionFolderPath).createSync(
+      recursive: true,
+    );
   }
 
   Future<void> resetNewVersionPrefs() async {
     await setNewVersionNameInPreference("");
     await setNewVersionFilePathInPreference("");
     await setNewVersionDownloadedInPreference(false);
+
+    removeAllDownloadedVersionFile();
   }
 
   Future<void> installUpdate() async {
@@ -73,25 +98,40 @@ class UpdateProvider extends ChangeNotifier {
   }
 
   Future<void> updateHandler() async {
-    final packageInfo = await PackageInfoWindows().getAll();
+    newVersionFolderPath = "${(await getApplicationSupportDirectory()).path}\\newVersion\\";
+
+    final packageInfo = (await PackageInfo.fromPlatform());
     final currentVersion = packageInfo.version;
 
     if (((await retrieveNewVersionNameInPreference()) ?? "") == "v$currentVersion") {
       await resetNewVersionPrefs();
     }
 
-    if ((await retrieveNewVersionDownloadedInPreference()) ?? false) return;
+    if ((await retrieveNewVersionDownloadedInPreference()) ?? false) {
+      if (newVersionDownloaded == true) {
+        navService.pushReplacementNamed(ScreenUpdate.routeName);
+      }
+
+      return;
+    }
 
     final Release? githubRelease = await fetchLatestReleaseFromGithub();
 
-    final ReleaseAsset? firstAsset = githubRelease?.assets?.first;
-    if (githubRelease != null && githubRelease.tagName != "v$currentVersion" && firstAsset != null) {
-      final String? newVersionFilePath = await downloadLatestReleaseAsset(firstAsset);
+    final ReleaseAsset? foundAsset = githubRelease?.assets?.firstWhereOrNull((asset) {
+      return asset.name?.endsWith('.exe') ?? false;
+    });
+
+    if (githubRelease != null && githubRelease.tagName != "v$currentVersion" && foundAsset != null) {
+      final String? newVersionFilePath = await downloadLatestReleaseAsset(foundAsset);
 
       if (newVersionFilePath != null) {
         await setNewVersionNameInPreference(githubRelease.tagName!);
         await setNewVersionFilePathInPreference(newVersionFilePath);
         await setNewVersionDownloadedInPreference(true);
+
+        if (newVersionDownloaded == true) {
+          navService.pushReplacementNamed(ScreenUpdate.routeName);
+        }
       }
     } else {
       await resetNewVersionPrefs();

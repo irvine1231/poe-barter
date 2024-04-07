@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
 import 'package:poe_barter/constants.dart';
+import 'package:poe_barter/providers/auto_update.dart';
 import 'package:poe_barter/providers/offer.dart';
 import 'package:poe_barter/providers/process.dart';
 import 'package:poe_barter/providers/setting.dart';
+import 'package:poe_barter/screens/screen_error.dart';
 import 'package:poe_barter/screens/screen_setting.dart';
 import 'package:poe_barter/screens/screen_start.dart';
+import 'package:poe_barter/screens/screen_tools.dart';
+import 'package:poe_barter/screens/screen_update.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:system_tray/system_tray.dart';
@@ -98,6 +102,14 @@ Future<void> initSystemTray() async {
         navService.pushReplacementNamed(ScreenSetting.routeName);
       },
     ),
+    MenuItemLabel(
+      label: 'Tools',
+      onClicked: (menuItem) async {
+        await windowManager.hide();
+
+        navService.pushReplacementNamed(ScreenTools.routeName);
+      },
+    ),
     MenuSeparator(),
     MenuItemLabel(
       label: 'Show',
@@ -145,11 +157,22 @@ class MyApp extends StatelessWidget {
         routes: {
           ScreenStart.routeName: (context) => const ScreenStart(),
           ScreenSetting.routeName: (context) => const ScreenSetting(),
+          ScreenTools.routeName: (context) => const ScreenTools(),
+          ScreenUpdate.routeName: (context) => const ScreenUpdate(),
         },
         onGenerateRoute: (settings) {
           final ScreenArguments args = settings.arguments as ScreenArguments;
 
           switch (settings.name) {
+            case ScreenError.routeName:
+              return MaterialPageRoute(
+                builder: (context) {
+                  return ScreenError(
+                    errorMsg: args.errorMsg ?? '',
+                  );
+                },
+              );
+
             default:
               assert(false, 'Need to implement ${settings.name}');
               return null;
@@ -160,8 +183,15 @@ class MyApp extends StatelessWidget {
 
 class ScreenArguments {
   final String? screenTitle;
+  final String? errorMsg;
 
   ScreenArguments({
     this.screenTitle,
+    this.errorMsg,
   });
+
+  static ScreenArguments fromJson(Map<String, String> args) => ScreenArguments(
+        screenTitle: args['screenTitle'],
+        errorMsg: args['errorMsg'],
+      );
 }

@@ -6,12 +6,18 @@ import 'dart:io';
 import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:keyboard_event/keyboard_event.dart';
+import 'package:no_context_navigation/no_context_navigation.dart';
 import 'package:poe_barter/models/command.dart';
 import 'package:poe_barter/models/events/trade_accepted_event.dart';
 import 'package:poe_barter/models/events/trade_event.dart';
 import 'package:poe_barter/models/events/whisper_event.dart';
 import 'package:poe_barter/providers/offer.dart';
+import 'package:poe_barter/screens/screen_error.dart';
+import 'package:poe_barter/screens/screen_tools.dart';
 import 'package:win32/win32.dart';
+import 'package:window_manager/window_manager.dart';
+
+import '../main.dart';
 
 class ProcessProvider extends ChangeNotifier {
   static const String poeValidName = "Path of Exile";
@@ -91,26 +97,38 @@ class ProcessProvider extends ChangeNotifier {
       return true;
     });
 
-    keyboardEvent.startListening((keyEvent) {
+    keyboardEvent.startListening((keyEvent) async {
       if (!isPoeActive) return;
 
       if (keyEvent.isKeyUP) {
         if (keyEvent.vkCode == VK_F5) {
           sendHideoutCommand();
         }
+
+        if (keyEvent.vkCode == VK_F6) {
+          navService.pushReplacementNamed(ScreenTools.routeName);
+        }
       }
     });
   }
 
   void listenForPoeClientLog() async {
-    clientLogFile = File("$poePath$clientLogFolderName/$clientLogFileName");
+    clientLogFile = File("$poePath$clientLogFolderName\\$clientLogFileName");
 
     // Reset Stream
     clientLogFileStream = null;
     clientLogFileStreamSubscription?.cancel();
 
     int index = 0;
-    clientLogFileStream = clientLogFile?.openRead();
+    try {
+      clientLogFileStream = clientLogFile?.openRead();
+    } catch (e) {
+      await windowManager.hide();
+      navService.pushReplacementNamed(ScreenError.routeName, args: ScreenArguments(errorMsg: "Read client log issue."));
+
+      return;
+    }
+
     clientLogFileStreamSubscription = clientLogFileStream?.listen(
       (chars) {
         index += chars.length;
@@ -123,12 +141,20 @@ class ProcessProvider extends ChangeNotifier {
     );
   }
 
-  void startProcessIncomingLogsLoop() {
+  void startProcessIncomingLogsLoop() async {
     // Reset Stream
     clientLogFileStream = null;
     clientLogFileStreamSubscription?.cancel();
 
-    clientLogFileStream = clientLogFile?.openRead(clientLogLastIndex);
+    try {
+      clientLogFileStream = clientLogFile?.openRead(clientLogLastIndex);
+    } catch (e) {
+      await windowManager.hide();
+      navService.pushReplacementNamed(ScreenError.routeName, args: ScreenArguments(errorMsg: "Read client log issue."));
+
+      return;
+    }
+
     clientLogFileStreamSubscription = clientLogFileStream?.listen(
       (chars) {
         if (chars.isEmpty) {
